@@ -66,14 +66,8 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
     public GT_GUI_MultiblocksHandler() {
         super();
 
-        ClearGuiButton previousTierButton = new ClearGuiButton(
-                0,
-                TIER_BUTTON_X,
-                TIER_BUTTON_Y,
-                ICON_SIZE_X,
-                ICON_SIZE_Y,
-                "<");
-        ClearGuiButton nextTierButton = new ClearGuiButton(
+        super.previousTierButton = new ClearGuiButton(0, TIER_BUTTON_X, TIER_BUTTON_Y, ICON_SIZE_X, ICON_SIZE_Y, "<");
+        super.nextTierButton = new ClearGuiButton(
                 0,
                 TIER_BUTTON_X + ICON_SIZE_X + TIER_BUTTON_SPACE_X,
                 TIER_BUTTON_Y,
@@ -88,8 +82,8 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
                 ICON_SIZE_Y,
                 "P");
 
-        buttons.put(previousTierButton, this::togglePreviousTier);
-        buttons.put(nextTierButton, this::toggleNextTier);
+        buttons.put(super.previousTierButton, this::togglePreviousTier);
+        buttons.put(super.nextTierButton, this::toggleNextTier);
         buttons.put(projectMultiblocksButton, this::projectMultiblocks);
     }
 
@@ -163,12 +157,12 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
         super.drawButtonsTitle();
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        String tierText = "Tier: " + tierIndex;
+        String tierText = super.guiTextTier + ": " + tierIndex;
         fontRenderer.drawString(
                 tierText,
                 TIER_BUTTON_X + ICON_SIZE_X + (TIER_BUTTON_SPACE_X - fontRenderer.getStringWidth(tierText)) / 2,
                 TIER_BUTTON_Y + 5,
-                0x333333);
+                super.guiColorFont);
     }
 
     @Override
