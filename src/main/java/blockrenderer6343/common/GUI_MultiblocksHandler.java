@@ -44,7 +44,7 @@ public abstract class GUI_MultiblocksHandler<T> {
     protected static final int RECIPE_WIDTH = 160;
     protected static final int sceneHeight = RECIPE_WIDTH - 10;
     protected static final int ICON_SIZE_X = 20;
-    protected static final int ICON_SIZE_Y = 20;
+    protected static final int ICON_SIZE_Y = 12;
     protected static final int MOUSE_OFFSET_X = 5;
     protected static final int MOUSE_OFFSET_Y = 43;
     protected static final int LAYER_BUTTON_X = -5;
@@ -288,7 +288,7 @@ public abstract class GUI_MultiblocksHandler<T> {
                 guiLayerButtonTitle,
                 LAYER_BUTTON_X + ICON_SIZE_X
                         + (initialLayerButtonTitleWidth - fontRenderer.getStringWidth(guiLayerButtonTitle)) / 2,
-                LAYER_BUTTON_Y + 5,
+                LAYER_BUTTON_Y + 2,
                 guiColorFont);
     }
 

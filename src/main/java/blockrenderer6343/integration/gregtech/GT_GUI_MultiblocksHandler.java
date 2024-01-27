@@ -188,7 +188,7 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
                 guiTierButtonTitle,
                 TIER_BUTTON_X + ICON_SIZE_X
                         + (initialTierButtonTitleWidth - fontRenderer.getStringWidth(guiTierButtonTitle)) / 2,
-                TIER_BUTTON_Y + 5,
+                TIER_BUTTON_Y + 2,
                 super.guiColorFont);
     }
 
