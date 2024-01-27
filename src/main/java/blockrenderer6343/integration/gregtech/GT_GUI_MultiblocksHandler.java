@@ -48,9 +48,8 @@ import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 
 public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstructable> {
 
-    protected static final int TIER_BUTTON_X = LAYER_BUTTON_X + 5;
+    protected static final int TIER_BUTTON_X = LAYER_BUTTON_X;
     protected static final int TIER_BUTTON_Y = LAYER_BUTTON_Y - ICON_SIZE_Y;
-    protected static final int TIER_BUTTON_SPACE_X = 25;
     protected static final int PROJECT_BUTTON_X = 145;
     protected static final int PROJECT_BUTTON_Y = -5;
     private static final BlockPosition MB_PLACE_POS = new BlockPosition(0, 64, 0);
@@ -58,9 +57,9 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
 
     protected static int tierIndex = 1;
 
-    protected String guiTierButtonTitle;
-    protected int initialTierButtonTitleWidth;
-    protected String guiTextTier;
+    protected static String guiTextTier;
+    protected static String guiTierButtonTitle;
+    protected static int initialTierButtonTitleWidth;
     protected ClearGuiButton previousTierButton, nextTierButton;
 
     private static EntityPlayer fakeMultiblockBuilder;
@@ -75,7 +74,7 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
         previousTierButton = new ClearGuiButton(0, TIER_BUTTON_X, TIER_BUTTON_Y, ICON_SIZE_X, ICON_SIZE_Y, "<");
         nextTierButton = new ClearGuiButton(
                 0,
-                TIER_BUTTON_X + ICON_SIZE_X + TIER_BUTTON_SPACE_X,
+                TIER_BUTTON_X + ICON_SIZE_X,
                 TIER_BUTTON_Y,
                 ICON_SIZE_X,
                 ICON_SIZE_Y,

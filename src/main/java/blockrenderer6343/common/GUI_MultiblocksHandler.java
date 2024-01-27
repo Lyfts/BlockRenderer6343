@@ -49,7 +49,6 @@ public abstract class GUI_MultiblocksHandler<T> {
     protected static final int MOUSE_OFFSET_Y = 43;
     protected static final int LAYER_BUTTON_X = -5;
     protected static final int LAYER_BUTTON_Y = 135;
-    protected static final int LAYER_BUTTON_SPACE_X = 35;
     protected static final float DEFAULT_RANGE_MULTIPLIER = 3.5f;
 
     protected static int guiMouseX;
@@ -61,27 +60,25 @@ public abstract class GUI_MultiblocksHandler<T> {
     protected static float rotationPitch;
     protected static float zoom;
 
-    protected String guiTextLayer;
-    protected int guiColorBg;
-    protected int guiColorFont;
-    protected int buttonColorEnabled;
-    protected int buttonColorDisabled;
-    protected int buttonColorHovered;
-    protected int buttonTitleSpace;
-
-    protected String guiLayerButtonTitle;
-    protected int initialLayerButtonTitleWidth;
-
     protected static ItemStack tooltipBlockStack;
     protected static BlockPosition selectedBlock;
 
     protected static int layerIndex = -1;
 
+    protected static int guiColorBg;
+    protected static int guiColorFont;
+    protected static int buttonColorEnabled;
+    protected static int buttonColorDisabled;
+    protected static int buttonColorHovered;
+
+    protected static String guiTextLayer;
+    protected static String guiLayerButtonTitle;
+    protected static int initialLayerButtonTitleWidth;
+    protected ClearGuiButton previousLayerButton, nextLayerButton;
+
     protected List<ItemStack> ingredients = new ArrayList<>();
     protected Consumer<List<ItemStack>> onIngredientChanged;
     protected static final Map<GuiButton, Runnable> buttons = new HashMap<>();
-
-    protected ClearGuiButton previousLayerButton, nextLayerButton;
 
     protected T renderingController;
     protected ItemStack stackForm;
@@ -93,7 +90,7 @@ public abstract class GUI_MultiblocksHandler<T> {
         previousLayerButton = new ClearGuiButton(0, LAYER_BUTTON_X, LAYER_BUTTON_Y, ICON_SIZE_X, ICON_SIZE_Y, "<");
         nextLayerButton = new ClearGuiButton(
                 0,
-                LAYER_BUTTON_X + ICON_SIZE_X + LAYER_BUTTON_SPACE_X,
+                LAYER_BUTTON_X + ICON_SIZE_X,
                 LAYER_BUTTON_Y,
                 ICON_SIZE_X,
                 ICON_SIZE_Y,
