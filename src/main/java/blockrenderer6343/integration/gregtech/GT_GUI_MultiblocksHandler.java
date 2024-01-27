@@ -36,6 +36,7 @@ import blockrenderer6343.Tags;
 import blockrenderer6343.api.utils.BlockPosition;
 import blockrenderer6343.api.utils.CreativeItemSource;
 import blockrenderer6343.api.utils.PositionedIStructureElement;
+import blockrenderer6343.client.utils.GuiText;
 import blockrenderer6343.client.world.ClientFakePlayer;
 import blockrenderer6343.common.GUI_MultiblocksHandler;
 import codechicken.lib.math.MathHelper;
@@ -57,6 +58,11 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
 
     protected static int tierIndex = 1;
 
+    protected String guiTierButtonTitle;
+    protected int initialTierButtonTitleWidth;
+    protected String guiTextTier;
+    protected ClearGuiButton previousTierButton, nextTierButton;
+
     private static EntityPlayer fakeMultiblockBuilder;
 
     private final List<List<ItemStack>> candidates = new ArrayList<>();
@@ -66,8 +72,8 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
     public GT_GUI_MultiblocksHandler() {
         super();
 
-        super.previousTierButton = new ClearGuiButton(0, TIER_BUTTON_X, TIER_BUTTON_Y, ICON_SIZE_X, ICON_SIZE_Y, "<");
-        super.nextTierButton = new ClearGuiButton(
+        previousTierButton = new ClearGuiButton(0, TIER_BUTTON_X, TIER_BUTTON_Y, ICON_SIZE_X, ICON_SIZE_Y, "<");
+        nextTierButton = new ClearGuiButton(
                 0,
                 TIER_BUTTON_X + ICON_SIZE_X + TIER_BUTTON_SPACE_X,
                 TIER_BUTTON_Y,
@@ -82,9 +88,25 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
                 ICON_SIZE_Y,
                 "P");
 
-        buttons.put(super.previousTierButton, this::togglePreviousTier);
-        buttons.put(super.nextTierButton, this::toggleNextTier);
+        buttons.put(previousTierButton, this::togglePreviousTier);
+        buttons.put(nextTierButton, this::toggleNextTier);
         buttons.put(projectMultiblocksButton, this::projectMultiblocks);
+    }
+
+    @Override
+    protected void setLocalizationAndColor() {
+        super.setLocalizationAndColor();
+        guiTextTier = GuiText.Tier.getLocal();
+        previousTierButton.setColors(super.buttonColorEnabled, super.buttonColorDisabled, super.buttonColorHovered);
+        nextTierButton.setColors(super.buttonColorEnabled, super.buttonColorDisabled, super.buttonColorHovered);
+
+        guiTierButtonTitle = getTierButtonTitle();
+
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        initialTierButtonTitleWidth = fontRenderer.getStringWidth(guiTierButtonTitle);
+        nextTierButton.xPosition = TIER_BUTTON_X + ICON_SIZE_X
+                + initialTierButtonTitleWidth
+                - fontRenderer.getStringWidth("<") / 2;
     }
 
     public void setOnCandidateChanged(Consumer<List<List<ItemStack>>> callback) {
@@ -137,12 +159,14 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
 
     private void toggleNextTier() {
         tierIndex++;
+        guiTierButtonTitle = getTierButtonTitle();
         initializeSceneRenderer(false);
     }
 
     private void togglePreviousTier() {
         if (tierIndex > 1) {
             tierIndex--;
+            guiTierButtonTitle = getTierButtonTitle();
             initializeSceneRenderer(false);
         }
     }
@@ -152,15 +176,19 @@ public class GT_GUI_MultiblocksHandler extends GUI_MultiblocksHandler<IConstruct
         return I18n.format(stackForm.getDisplayName());
     }
 
+    protected String getTierButtonTitle() {
+        return guiTextTier + ": " + tierIndex;
+    }
+
     @Override
     protected void drawButtonsTitle() {
         super.drawButtonsTitle();
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        String tierText = super.guiTextTier + ": " + tierIndex;
         fontRenderer.drawString(
-                tierText,
-                TIER_BUTTON_X + ICON_SIZE_X + (TIER_BUTTON_SPACE_X - fontRenderer.getStringWidth(tierText)) / 2,
+                guiTierButtonTitle,
+                TIER_BUTTON_X + ICON_SIZE_X
+                        + (initialTierButtonTitleWidth - fontRenderer.getStringWidth(guiTierButtonTitle)) / 2,
                 TIER_BUTTON_Y + 5,
                 super.guiColorFont);
     }

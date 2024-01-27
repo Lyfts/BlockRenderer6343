@@ -62,12 +62,15 @@ public abstract class GUI_MultiblocksHandler<T> {
     protected static float zoom;
 
     protected String guiTextLayer;
-    protected String guiTextTier;
     protected int guiColorBg;
     protected int guiColorFont;
     protected int buttonColorEnabled;
     protected int buttonColorDisabled;
     protected int buttonColorHovered;
+    protected int buttonTitleSpace;
+
+    protected String guiLayerButtonTitle;
+    protected int initialLayerButtonTitleWidth;
 
     protected static ItemStack tooltipBlockStack;
     protected static BlockPosition selectedBlock;
@@ -78,7 +81,7 @@ public abstract class GUI_MultiblocksHandler<T> {
     protected Consumer<List<ItemStack>> onIngredientChanged;
     protected static final Map<GuiButton, Runnable> buttons = new HashMap<>();
 
-    protected ClearGuiButton previousLayerButton, nextLayerButton, previousTierButton, nextTierButton;
+    protected ClearGuiButton previousLayerButton, nextLayerButton;
 
     protected T renderingController;
     protected ItemStack stackForm;
@@ -102,21 +105,23 @@ public abstract class GUI_MultiblocksHandler<T> {
 
     protected void setLocalizationAndColor() {
         BlockRenderer6343.info("Setting Localization and Color.");
+        guiTextLayer = GuiText.Layer.getLocal();
         guiColorBg = GuiText.BgColor.getColor();
         guiColorFont = GuiText.FontColor.getColor();
-        guiTextLayer = GuiText.Layer.getLocal();
-        guiTextTier = GuiText.Tier.getLocal();
         buttonColorEnabled = GuiText.ButtonEnabledColor.getColor();
         buttonColorDisabled = GuiText.ButtonDisabledColor.getColor();
         buttonColorHovered = GuiText.ButtonHoveredColor.getColor();
 
         previousLayerButton.setColors(buttonColorEnabled, buttonColorDisabled, buttonColorHovered);
         nextLayerButton.setColors(buttonColorEnabled, buttonColorDisabled, buttonColorHovered);
-        previousTierButton.setColors(buttonColorEnabled, buttonColorDisabled, buttonColorHovered);
-        nextTierButton.setColors(buttonColorEnabled, buttonColorDisabled, buttonColorHovered);
-        // for (GuiButton button : buttons.keySet()) {
-        // button.setColors(buttonColorEnabled, buttonColorDisabled, buttonColorHovered);
-        // }
+
+        guiLayerButtonTitle = getLayerButtonTitle();
+
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        initialLayerButtonTitleWidth = fontRenderer.getStringWidth(guiLayerButtonTitle);
+        nextLayerButton.xPosition = LAYER_BUTTON_X + ICON_SIZE_X
+                + initialLayerButtonTitleWidth
+                - fontRenderer.getStringWidth("<") / 2;
     }
 
     public void loadMultiblock(T multiblock, ItemStack stackForm) {
@@ -182,6 +187,7 @@ public abstract class GUI_MultiblocksHandler<T> {
             }
             renderer.addRenderedBlocks(renderBlocks);
             scanIngredients();
+            guiLayerButtonTitle = getLayerButtonTitle();
         }
     }
 
@@ -270,18 +276,22 @@ public abstract class GUI_MultiblocksHandler<T> {
                     lines.get(i),
                     (RECIPE_WIDTH - fontRenderer.getStringWidth(lines.get(i))) / 2,
                     fontRenderer.FONT_HEIGHT * i,
-                    this.guiColorFont);
+                    guiColorFont);
         }
     }
 
     protected abstract String getMultiblockName();
 
+    protected String getLayerButtonTitle() {
+        return guiTextLayer + ": " + (layerIndex == -1 ? "A" : Integer.toString(layerIndex + 1));
+    }
+
     protected void drawButtonsTitle() {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        String layerText = guiTextLayer + ": " + (layerIndex == -1 ? "A" : Integer.toString(layerIndex + 1));
         fontRenderer.drawString(
-                layerText,
-                LAYER_BUTTON_X + ICON_SIZE_X + (LAYER_BUTTON_SPACE_X - fontRenderer.getStringWidth(layerText)) / 2,
+                guiLayerButtonTitle,
+                LAYER_BUTTON_X + ICON_SIZE_X
+                        + (initialLayerButtonTitleWidth - fontRenderer.getStringWidth(guiLayerButtonTitle)) / 2,
                 LAYER_BUTTON_Y + 5,
                 guiColorFont);
     }
@@ -456,7 +466,6 @@ public abstract class GUI_MultiblocksHandler<T> {
             colorEnabled = clrEnabled;
             colorDisabled = clrDisabled;
             colorHovered = clrHovered;
-            BlockRenderer6343.info("Colors: " + colorEnabled + ", " + colorDisabled + ", " + colorHovered);
         }
 
         @Override
