@@ -39,20 +39,14 @@ public enum GuiText {
                 BlockRenderer6343.warn("Couldn't format color correctly for: " + this.root + " -> " + hex);
             }
         }
-        BlockRenderer6343.info("ColorOverride: " + this.getUnlocalized() + "->" + hex);
         return color;
     }
 
     public String getLocal() {
-        BlockRenderer6343.info(
-                "LocalizedText: " + this.getUnlocalized()
-                        + "->"
-                        + StatCollector.translateToLocal(this.getUnlocalized()));
         return StatCollector.translateToLocal(this.getUnlocalized());
     }
 
     public String getUnlocalized() {
-        // BlockRenderer6343.warn(this.root + '.' + this.toString());
         return this.root + '.' + this.toString();
     }
 }

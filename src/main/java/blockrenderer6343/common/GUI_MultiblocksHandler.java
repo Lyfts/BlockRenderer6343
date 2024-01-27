@@ -104,7 +104,6 @@ public abstract class GUI_MultiblocksHandler<T> {
     }
 
     protected void setLocalizationAndColor() {
-        BlockRenderer6343.info("Setting Localization and Color.");
         guiTextLayer = GuiText.Layer.getLocal();
         guiColorBg = GuiText.BgColor.getColor();
         guiColorFont = GuiText.FontColor.getColor();
